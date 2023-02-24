@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GenericDAO<T, I>  {
 
-    @PersistenceContext(unitName = "PU")
+    @PersistenceContext(unitName = "ConexaoDB")
     EntityManager em;
     
     Class<T> clazz;
@@ -22,8 +22,9 @@ public class GenericDAO<T, I>  {
     }
 
     @Transactional
-    public void save(T t){
+    public T save(T t){
         em.persist(t);
+        return t;
     }
 
     public T findById(I id){
@@ -50,6 +51,10 @@ public class GenericDAO<T, I>  {
 
     public TypedQuery<T> createQuery(String query) {
         return em.createQuery(query, clazz);
+    }
+
+    public <J> TypedQuery<J> createQuery(String query, Class<J> classe) {
+        return em.createQuery(query, classe);
     }
 
     public Query createNativeQuery(String query) {
